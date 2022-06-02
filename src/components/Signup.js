@@ -1,43 +1,60 @@
 import { Component } from 'react';
 import {Link} from 'react-router-dom';
-class Signup extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+import validate from '../utils/validate';
+import {Navigate} from 'react-router-dom';
+
+let baseURL='https://mighty-oasis-08080.herokuapp.com/api';
+let signupURL='/users'; 
+
+class Signup extends Component {  
+    state = {
+      username: '',
       email: '',
       password: '',
-      username: '',
-      emailError: null,
-      passwordError: null,
-      usernameError: null
+      errors: {
+        username: '',
+        email: '',
+        password: '',
+      }
     };
-  }
+
+    
   handleSubmit = (event) => {
+      const {username, email, password} = this.state;
       event.preventDefault();
+      fetch(baseURL+signupURL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          "user":{
+            username,
+            email,
+            password
+          }
+        })
+      }).then(res => {
+        if(!res.ok) {
+          throw new Error("Username already exists");
+        }
+        return res.json()})
+      .then(data => this.setState({user: data.user}))
+      .catch(err => {this.setState({err: err.message})});
   };
   handleChange = (event) => {
-    let field = event.target.id;
-    let value = event.target.value;
-    let error = field + 'Error';
-
+    const {name, value} = event.target;
+    let errors = {...this.state.errors};
+    validate(errors, name, value);
     this.setState({
-      [event.target.id]: value,
-      [error]: this.validate(field, value),
+      [name]: value,
+      errors,
     });
-  };
-  validate = (field, value) => {
-    let { email, password } = this.state;
-    if (field === 'email') {
-      return email.includes('@') ? 'Email must contain @' : null;
-    } else if (field === 'password') {
-      return /\d/.test(password) ? 'Email must contain atleast 6 characters and it must contain a number': null;
-    }
-  };
+  }; 
   render() {
-    let { email, password, username, emailError, passwordError, usernameError } = this.state;
+    let { email, password, username, errors } = this.state;
     return (
       <>
         <h1>Signup Page</h1>
+        <span className="error">{this.state.err}</span>  
         <form onSubmit={(event) => this.handleSubmit(event)}>
           <input
             type="text"
@@ -45,27 +62,35 @@ class Signup extends Component {
             id="email"
             value={email}
             onChange={(event) => this.handleChange(event)}
+            placeholder="Enter email"
           />
-          <div className="error">{emailError}</div>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            value={password}
-            onChange={(event) => this.handleChange(event)}
-          />
-          <div className="error">{passwordError}</div>
+          <div className="error">{errors.email}</div>
           <input
             type="username"
             name="username"
             id="username"
             value={username}
             onChange={(event) => this.handleChange(event)}
+            placeholder="Enter username"
           />
-          <div className="error">{usernameError}</div>
+          <div className="error">{errors.username}</div>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            value={password}
+            onChange={(event) => this.handleChange(event)}
+            placeholder="Enter password"
+            autoComplete='off'
+          />
+          <div className="error">{errors.password}</div>  
+                
           <input type="submit" value="Signup" />
+          
           <Link to="/login">Login</Link>
         </form>
+        {this.state.user && "You are registered as " + this.state.user.username}
+        {this.state.user && <Navigate to='/home' replace={true} />}
       </>
     );
   }

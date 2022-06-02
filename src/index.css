@@ -76,6 +76,9 @@ a {
     justify-content: space-between;
     align-items: center;
 }
+.flex-column {
+    flex-direction: column;
+}
 .flex-20 {
     flex: 0 1 20%;
 }
@@ -109,7 +112,11 @@ h4 {
 }
 
 /************** Header **************/
-
+.userDetail {
+text-align: right;
+font-weight: 700;
+margin-bottom: 1rem;
+}
 
 /************** Main **************/
 .heart1, .heart2 {
@@ -134,5 +141,14 @@ h4 {
     border-radius: .2rem;
     margin-right: 1rem;
 }
+.error {
+    color: rgb(244, 69, 69);
+}
+input {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: .5rem;
+}
+
 
 /************** Footer **************/

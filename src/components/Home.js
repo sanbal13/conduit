@@ -16,9 +16,9 @@ class Home extends React.Component {
    
     let allTags = articles.reduce((acc, cv) => acc.concat(cv.tagList), []);
     let allUniqueTags = Array.from(new Set(allTags));
-
+    
     return (
-      <>
+      <>      
         <section className="main">
           <h5>Global Feed</h5>
           <ul>

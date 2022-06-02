@@ -1,0 +1,41 @@
+.loader {
+    width: 20rem;    
+    border: 2px solid grey;      
+    animation: spin 2s linear 0s infinite alternate both;
+    /* width: fit-content; */
+    padding: 1rem;
+    border-right: 50px solid #86efac;
+    border-left: 50px solid #86efac;
+    margin: 0 auto;
+    border-radius: 50%;
+    font-weight: 700;
+    box-shadow: 1px 1px 3px #000;    
+    text-align: center;
+}
+
+@keyframes spin {
+    from {
+         border-bottom: 50px solid #a3e635; 
+         color: red;
+    }
+    to {
+        border-top: 50px solid #a3e635; 
+        color: blue;
+    }
+}
+.loader-content:after {
+    animation: loader-content 2s linear 0s infinite normal both;
+    content:"";
+}
+@keyframes loader-content {
+    0% {
+        content: '.';
+    }
+    50% {
+        content: '..';
+    }
+    100% {
+        content: '...'
+    }
+}
+

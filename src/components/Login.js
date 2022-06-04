@@ -1,58 +1,69 @@
 import { Component } from 'react';
 import validate from '../utils/validate';
-import {Navigate} from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-let baseURL='https://mighty-oasis-08080.herokuapp.com/api';
-let loginURL='/users/login'; 
+let baseURL = 'https://mighty-oasis-08080.herokuapp.com/api';
+let loginURL = '/users/login';
 
-class Login extends Component {  
+class Login extends Component {
   state = {
     email: '',
     password: '',
     errors: {
       email: '',
-      password: ''
+      password: '',
     },
-    
   };
   handleSubmit = (e) => {
     e.preventDefault();
-    fetch(baseURL+loginURL, {
+    fetch(baseURL + loginURL, {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        "user":{
-          "email": this.state.email,
-          "password": this.state.password
+        user: {
+          email: this.state.email,
+          password: this.state.password,
+        },
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Invalid username/password');
         }
+        return res.json();
       })
-    }).then(res => {
-      if(!res.ok){
-        throw new Error("Invalid username/password");
-      }
-      return res.json()
-    }).then(data => {this.setState({user: data.user}); this.props.setUser(data.user)})
-    .catch(err => this.setState({errorsDetail: "Email/Password is invalid"}))    
+      .then((data) => {
+        this.setState({ user: data.user });
+        this.props.setUser(data.user);
+        this.props.router.navigate('/home');
+      })
+      .catch((err) =>
+        this.setState({ errorsDetail: 'Email/Password is invalid' })
+      );
   };
   handleChange = (e) => {
-    let {name, value} = e.target;
-    let errors = {...this.state.errors};
+    let { name, value } = e.target;
+    let errors = { ...this.state.errors };
     validate(errors, name, value);
     this.setState({
       [name]: value,
-      errors
+      errors,
     });
-  }
+  };
   render() {
-    let {email, password, errors} = this.state;   
-    
+    let { email, password, errors } = this.state;
+
     return (
       <>
-      <center>
-        <h2>Login</h2>
-        <p>Don't have account? Create One.</p>
-        </center> 
-        <form onSubmit={(e) => this.handleSubmit(e)} className="flex flex-column">
+        <center>
+          <h2>Login</h2>
+          <p>Don't have account? Create One.</p>
+        </center>
+        <form
+          onSubmit={(e) => this.handleSubmit(e)}
+          className="flex flex-column"
+        >
           <input
             type="text"
             name="email"
@@ -68,8 +79,8 @@ class Login extends Component {
             id="password"
             placeholder="Enter password"
             value={password}
-            onChange={(e) =>this.handleChange(e)}
-            autoComplete = "off"
+            onChange={(e) => this.handleChange(e)}
+            autoComplete="off"
           />
           <span className="error">{errors.password}</span>
           <span className="error">{this.state.errorsDetail}</span>
@@ -77,15 +88,25 @@ class Login extends Component {
         </form>
         {this.state.user && (
           <>
-          <h3>{"username: " + this.state.user.username}</h3>
-          <h4>{"email: " + this.state.user.email}</h4>
-          <h4>{"token: " + this.state.user.token}</h4>
-          </>) 
-           }        
-           {this.state.user &&  <Navigate to="/home" replace={true} /> }
+            <h3>{'username: ' + this.state.user.username}</h3>
+            <h4>{'email: ' + this.state.user.email}</h4>
+            <h4>{'token: ' + this.state.user.token}</h4>
+          </>
+        )}
+        {this.state.user && <Navigate to="/home" replace={true} />}
       </>
     );
   }
 }
 
-export default Login;
+function withRouter(Component) {
+  function ComponentWithRouterProp(props) {
+    let location = useLocation();
+    let navigate = useNavigate();
+    let params = useParams();
+    return <Component {...props} router={{ location, navigate, params }} />;
+  }
+  return ComponentWithRouterProp;
+}
+
+export default withRouter(Login);

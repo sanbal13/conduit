@@ -15,16 +15,17 @@ class Home extends React.Component {
     }
    
     let allTags = articles.reduce((acc, cv) => acc.concat(cv.tagList), []);
-    let allUniqueTags = Array.from(new Set(allTags));
+    let allUniqueTags = Array.from(new Set(allTags)).filter((item) => item !== "");
     
     return (
-      <>      
-        <section className="main">
+      <>  
+      <div className="flex flex-start container">   
+        <section className="main flex-65">
           <h5>Global Feed</h5>
           <ul>
             {articles
               .filter(
-                (article, index) =>
+                (_article, index) =>
                   index >= page * 10 && index < (page + 1) * 10
               )
               .map((article) => {
@@ -50,14 +51,15 @@ class Home extends React.Component {
               })}
           </ul>
         </section>
-        <section className="aside">
+        <section className="aside flex-30">
           <ul>
             {allUniqueTags.map((tag) => (
-              <li key={tag}>{tag}</li>
+              <li key={tag} className='tag'>{tag}</li>
             ))}
           </ul>
         </section>
-        <section className="pagination">
+        </div> 
+        <section className="container pagination">
           {Array.from(
             { length: Math.ceil(articles.length / 10) },
             (_, i) => 1 + i

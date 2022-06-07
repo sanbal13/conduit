@@ -1,60 +1,67 @@
 import { Component } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import validate from '../utils/validate';
-import {Navigate} from 'react-router-dom';
+import WithRouter from './WithRouter';
 
-let baseURL='https://mighty-oasis-08080.herokuapp.com/api';
-let signupURL='/users'; 
+let baseURL = 'https://mighty-oasis-08080.herokuapp.com/api';
+let signupURL = '/users';
 
-class Signup extends Component {  
-    state = {
+class Signup extends Component {
+  state = {
+    username: '',
+    email: '',
+    password: '',
+    errors: {
       username: '',
       email: '',
       password: '',
-      errors: {
-        username: '',
-        email: '',
-        password: '',
-      }
-    };
+    },
+  };
 
-    
   handleSubmit = (event) => {
-      const {username, email, password} = this.state;
-      event.preventDefault();
-      fetch(baseURL+signupURL, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          "user":{
-            username,
-            email,
-            password
-          }
-        })
-      }).then(res => {
-        if(!res.ok) {
-          throw new Error("Username already exists");
+    const { username, email, password } = this.state;
+    event.preventDefault();
+    fetch(baseURL + signupURL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        user: {
+          username,
+          email,
+          password,
+        },
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Username already exists');
         }
-        return res.json()})
-      .then(data => this.setState({user: data.user}))
-      .catch(err => {this.setState({err: err.message})});
+        return res.json();
+      })
+      .then((data) => {
+        this.setState({ user: data.user });
+        this.props.setUser(data.user);
+        this.props.navigate('/');
+      })
+      .catch((err) => {
+        this.setState({ err: err.message });
+      });
   };
   handleChange = (event) => {
-    const {name, value} = event.target;
-    let errors = {...this.state.errors};
+    const { name, value } = event.target;
+    let errors = { ...this.state.errors };
     validate(errors, name, value);
     this.setState({
       [name]: value,
       errors,
     });
-  }; 
+  };
   render() {
     let { email, password, username, errors } = this.state;
     return (
       <>
         <h1>Signup Page</h1>
-        <span className="error">{this.state.err}</span>  
+        <span className="error">{this.state.err}</span>
         <form onSubmit={(event) => this.handleSubmit(event)}>
           <input
             type="text"
@@ -81,19 +88,18 @@ class Signup extends Component {
             value={password}
             onChange={(event) => this.handleChange(event)}
             placeholder="Enter password"
-            autoComplete='off'
+            autoComplete="off"
           />
-          <div className="error">{errors.password}</div>  
-                
+          <div className="error">{errors.password}</div>
+
           <input type="submit" value="Signup" />
-          
+
           <Link to="/login">Login</Link>
         </form>
-        {this.state.user && "You are registered as " + this.state.user.username}
-        {this.state.user && <Navigate to='/home' replace={true} />}
+        {this.state.user && 'You are registered as ' + this.state.user.username}        
       </>
     );
   }
 }
 
-export default Signup;
+export default WithRouter(Signup);

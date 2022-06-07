@@ -1,7 +1,6 @@
 import { Component } from 'react';
 import validate from '../utils/validate';
-import { Navigate } from 'react-router-dom';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import WithRouter from './WithRouter';
 
 let baseURL = 'https://mighty-oasis-08080.herokuapp.com/api';
 let loginURL = '/users/login';
@@ -36,7 +35,7 @@ class Login extends Component {
       .then((data) => {
         this.setState({ user: data.user });
         this.props.setUser(data.user);
-        this.props.router.navigate('/home');
+        this.props.navigate('/');
       })
       .catch((err) =>
         this.setState({ errorsDetail: 'Email/Password is invalid' })
@@ -93,20 +92,10 @@ class Login extends Component {
             <h4>{'token: ' + this.state.user.token}</h4>
           </>
         )}
-        {this.state.user && <Navigate to="/home" replace={true} />}
+        
       </>
     );
   }
 }
 
-function withRouter(Component) {
-  function ComponentWithRouterProp(props) {
-    let location = useLocation();
-    let navigate = useNavigate();
-    let params = useParams();
-    return <Component {...props} router={{ location, navigate, params }} />;
-  }
-  return ComponentWithRouterProp;
-}
-
-export default withRouter(Login);
+export default WithRouter(Login);

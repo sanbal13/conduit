@@ -49,14 +49,14 @@ class App extends React.Component {
       return <Loader />;
     }
     return (
-      <div className="container">
+      <>
         <Router>
-          <Header user={this.state.user} />          
+          <Header user={this.state.user} setUser={this.setUser}/>          
           {this.state.user ? <AuthorizedRoutes user={this.state.user} articles={articles}
-          /> : <UnauthorizedRoutes user={this.state.user} setUser={this.setUser} articles={articles}
+          /> : <UnauthorizedRoutes setUser={this.setUser} articles={articles}
           />}
         </Router>
-      </div>
+      </>
     );
   }
 }
@@ -68,18 +68,15 @@ function AuthorizedRoutes(props) {
               index
               element={<Home articles={props.articles} user={props.user} />}
             />
-            <Route
-              path="/home"
-              element={<Home articles={props.articles} user={props.user} />}
-            />            
-            <Route path="/article/:slug" element={<Article />} />
+                       
+            <Route path="/article/:slug" element={<Article articles={props.articles} user={props.user}/>} />
             <Route path="/tag" element={<Tag articles={props.articles} />} />
-            <Route path="/new-post" element={<NewPost />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/new-post" element={<NewPost token={props.user.token}/>} />
+            <Route path="/settings" element={<Settings user={props.user} />} />
+            <Route path="/profile/:user" element={<Profile articles={props.articles}  user={props.user}/>} />
             <Route
               path="*"
-              element={<h2>This page cannot be displayed. 404 Error</h2>}
+              element={<h2 className='container'>This page cannot be displayed. 404 Error</h2>}
             />
           </Routes>
   )
@@ -89,19 +86,16 @@ function UnauthorizedRoutes(props) {
     <Routes>
             <Route
               index
-              element={<Home articles={props.articles} user={props.user} />}
+              element={<Home articles={props.articles} />}
             />
-            <Route
-              path="/home"
-              element={<Home articles={props.articles} user={props.user} />}
-            />
+            
             <Route path="/login" element={<Login setUser={props.setUser} />} />
             <Route path="/signup" element={<Signup setUser={props.setUser}/>} />
-            <Route path="/article/:slug" element={<Article />} />
+            <Route path="/article/:slug" element={<Article articles={props.articles}/>} />
             <Route path="/tag" element={<Tag articles={props.articles} />} />            
             <Route
               path="*"
-              element={<h2>This page cannot be displayed. 404 Error</h2>}
+              element={<h2 className='container'>This page cannot be displayed. 404 Error</h2>}
             />
           </Routes>
   )

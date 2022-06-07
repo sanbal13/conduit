@@ -63,8 +63,8 @@ body {
 .container {
     max-width: 1300px;
     width: 100%;
-    margin: 2rem auto;
-    padding: 1rem;
+    margin: 0 auto;
+    padding: 0 1rem;
 }
 a {
     text-decoration: none;
@@ -75,6 +75,12 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.flex-start {
+    align-items: flex-start;
+}
+.justify-start {
+    justify-content: flex-start;
 }
 .flex-column {
     flex-direction: column;
@@ -87,6 +93,9 @@ a {
 }
 .flex-45 {
     flex: 0 1 45%;
+}
+.flex-65 {
+    flex: 0 1 65%;
 }
 .center {
     display: flex;
@@ -150,5 +159,103 @@ input {
     border-radius: .5rem;
 }
 
+form {
+    max-width: 800px;
+    width: 90%;
+    margin: 0 auto;
+    border: 1px solid grey;
+    padding: 2.5rem;
+}
+input {
+    width: 100%;
+    margin-bottom: .5rem;
+    outline: none;
+    border: 1px solid grey;
+}
+textarea {
+    width: 100%;
+    margin-top: .5rem;
+    padding: 1rem;
+    border-radius: .5rem;    
+    outline: none;
+}
+input:focus, textarea:focus {
+    box-shadow: 1px 1px 10px green;     
+}
+input:active, textarea:active {
+    box-shadow: 1px 1px 10px #a3e635;   
+}
+input[type="submit"] {    
+    background-color: #65a30d;
+    color: #fff;
+    font-weight: 700;
+    width: fit-content;    
+    align-self: flex-end;
+}
+input[type="submit"]:hover {
+    background-color: #a3e635;
+    color: #000;
+}
+
+input[type="submit"]:disabled {
+    background-color: rgb(189, 187, 187);
+    color: rgb(232, 230, 230)
+}
+
+/* Article Details */
+.article-details .hero {
+    background-color: #333;
+    color: #fff;
+    margin: 1rem 0;
+    padding: 2.5rem 0;    
+}
+.article-details .hero img {
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: .5rem;
+}
+.article-details .hero .username {
+   font-size: 1.5rem;    
+   display: inline-block;
+   margin-top: 5rem;
+}
+.article-details p {
+    margin: 5rem 0;
+    border-bottom: 1px solid rgb(206, 206, 206);
+    padding-bottom: 5rem;
+}
+
+.article-details .bio {
+    font-size: .9rem;
+}
+.profile .hero {
+    background-color: green;
+    padding: 2rem 0;
+    margin: 1rem 0;
+}
+.main, .aside {
+    margin-top: 2rem;
+}
+.edit {
+    color: #fff;
+    border: 1px solid #fff;
+    padding: .5rem 1rem;
+    display: inline-block;
+    margin-top: 1rem;
+}
+.edit:hover {
+    background-color: grey;
+    color: #000;
+}
+/* tag */
+.tag {
+    background-color: grey;
+    color: #fff;
+    display: inline-block;
+    margin: .3rem;
+    padding: .5rem;
+    border-radius: .5rem;
+}
 
 /************** Footer **************/

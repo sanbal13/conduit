@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import validate from '../utils/validate';
-import { Navigate, useNavigate } from 'react-router-dom';
+import WithRouter from './WithRouter';
 
 let baseURL = 'https://mighty-oasis-08080.herokuapp.com/api';
 let signupURL = '/users';
@@ -41,7 +41,7 @@ class Signup extends Component {
       .then((data) => {
         this.setState({ user: data.user });
         this.props.setUser(data.user);
-        this.props.navigate('/home');
+        this.props.navigate('/');
       })
       .catch((err) => {
         this.setState({ err: err.message });
@@ -96,19 +96,10 @@ class Signup extends Component {
 
           <Link to="/login">Login</Link>
         </form>
-        {this.state.user && 'You are registered as ' + this.state.user.username}
-        {this.state.user && <Navigate to="/home" replace={true} />}
+        {this.state.user && 'You are registered as ' + this.state.user.username}        
       </>
     );
   }
 }
 
-function withRouter(Component) {
-  function ComponentWithRouterProp(props) {
-    let navigate = useNavigate();
-    return <Component {...props} navigate={navigate} />;
-  }
-  return ComponentWithRouterProp;
-}
-
-export default withRouter(Signup);
+export default WithRouter(Signup);

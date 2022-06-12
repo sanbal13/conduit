@@ -220,10 +220,11 @@ input[type="submit"]:disabled {
    display: inline-block;
    margin-top: 5rem;
 }
-.article-details p {
-    margin: 5rem 0;
+.article-details .article-body {
+    margin-top: 5rem;
+    margin-bottom: 2rem;
     border-bottom: 1px solid rgb(206, 206, 206);
-    padding-bottom: 5rem;
+    padding-bottom: 3rem;
 }
 
 .article-details .bio {
@@ -237,16 +238,27 @@ input[type="submit"]:disabled {
 .main, .aside {
     margin-top: 2rem;
 }
-.edit {
+.settings-btn, .edit-btn, .delete-btn {
     color: #fff;
     border: 1px solid #fff;
     padding: .5rem 1rem;
     display: inline-block;
     margin-top: 1rem;
+    cursor: pointer;
 }
-.edit:hover {
+.settings-btn:hover, .edit-btn:hover {
     background-color: grey;
     color: #000;
+}
+.delete-btn {
+    background-color: transparent;
+    margin-left: 1rem;
+    color: red;
+    font-size: 1rem;
+}
+.delete-btn:hover {
+    background-color: rgba(255, 0, 0, .3);
+    color: #fff;
 }
 /* tag */
 .tag {
@@ -257,5 +269,52 @@ input[type="submit"]:disabled {
     padding: .5rem;
     border-radius: .5rem;
 }
+/* Comment */
 
+.comment-container {
+    max-width: 1000px;
+    margin: 0 auto;   
+}
+.comment-user-info {
+    vertical-align: middle;
+}
+.comment-content {
+    margin-bottom: -1rem;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    height: fit-content;
+}
+.comment-content:focus, .comment-content:active {
+    box-shadow: none;
+}
+.comment-img {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    margin-right: .3rem;
+}
+.comment-footer {
+    background-color: rgba(128, 128, 128, .2);
+    padding: 0 1rem;
+    vertical-align: middle;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    border-right: 1px solid grey;
+    border-left: 1px solid grey;
+    margin-bottom: 2rem;
+}
+.padding-1rem {
+    padding: 1rem;
+}
+.comment-delete-btn {
+    background-color: transparent;
+    width: fit-content;
+    border: none;
+    padding: 0;
+    padding-right: 1rem;
+}
+.comment-delete-btn:focus {
+    box-shadow: none;
+    color: red;
+}
 /************** Footer **************/

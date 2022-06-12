@@ -10,6 +10,7 @@ import Loader from './Loader';
 import NewPost from './NewPost';
 import Settings from './Settings';
 import Profile from './Profile';
+import EditArticle from './EditArticle';
 
 class App extends React.Component {
   state = {
@@ -67,13 +68,13 @@ function AuthorizedRoutes(props) {
             <Route
               index
               element={<Home articles={props.articles} user={props.user} />}
-            />
-                       
+            />                       
             <Route path="/article/:slug" element={<Article articles={props.articles} user={props.user}/>} />
             <Route path="/tag" element={<Tag articles={props.articles} />} />
             <Route path="/new-post" element={<NewPost token={props.user.token}/>} />
             <Route path="/settings" element={<Settings user={props.user} />} />
             <Route path="/profile/:user" element={<Profile articles={props.articles}  user={props.user}/>} />
+            <Route path="/article/edit/:slug" element={<EditArticle article={props.article} />} />
             <Route
               path="*"
               element={<h2 className='container'>This page cannot be displayed. 404 Error</h2>}

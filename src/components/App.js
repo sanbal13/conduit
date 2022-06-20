@@ -10,7 +10,7 @@ import Loader from './Loader';
 import NewPost from './NewPost';
 import Settings from './Settings';
 import Profile from './Profile';
-import EditArticle from './EditArticle';
+
 
 class App extends React.Component {
   state = {
@@ -23,7 +23,7 @@ class App extends React.Component {
   };
   componentDidMount() {
     let loggedInUser = localStorage.getItem('loggedInUser');
-    let token = loggedInUser !== 'null' && (loggedInUser !== 'undefined') ? JSON.parse(loggedInUser).token : null;
+    let token = loggedInUser && loggedInUser !== 'null' && (loggedInUser !== 'undefined') ? JSON.parse(loggedInUser).token : null;
     if(token) {
     fetch('https://mighty-oasis-08080.herokuapp.com/api/user', {
       method: 'GET',
@@ -72,9 +72,9 @@ function AuthorizedRoutes(props) {
             <Route path="/article/:slug" element={<Article articles={props.articles} user={props.user}/>} />
             <Route path="/tag" element={<Tag articles={props.articles} />} />
             <Route path="/new-post" element={<NewPost token={props.user.token}/>} />
+            <Route path="/editor/:slug" element={<NewPost token={props.user.token}/>} />
             <Route path="/settings" element={<Settings user={props.user} />} />
-            <Route path="/profile/:user" element={<Profile articles={props.articles}  user={props.user}/>} />
-            <Route path="/article/edit/:slug" element={<EditArticle article={props.article} />} />
+            <Route path="/profile/:user" element={<Profile articles={props.articles}  user={props.user}/>} />            
             <Route
               path="*"
               element={<h2 className='container'>This page cannot be displayed. 404 Error</h2>}

@@ -2,12 +2,14 @@ import React from 'react';
 import WithRouter from './WithRouter';
 
 let createArticleURL = 'https://mighty-oasis-08080.herokuapp.com/api/articles';
-class NewPost extends React.Component {
+
+class NewPost extends React.Component {  
   state = {
     title: '',
     description: '',
     article: '',
     tagList: [],
+    existingTagList: [],
     errors: {
       title: '',
       description: '',
@@ -15,6 +17,29 @@ class NewPost extends React.Component {
       tagList: '',
     },
   };
+  componentDidMount() {
+    if(this.props.params.slug) {
+      let slug = this.props.params.slug;
+      console.log(slug);
+      let getArticleURL =`https://mighty-oasis-08080.herokuapp.com/api/articles/${slug}`;
+      fetch(getArticleURL).then(res => {
+        if(!res.ok) {
+          return res.json().then(error => Promise.reject(error));
+        }
+        return res.json()
+      }
+      ).then(({article}) => {
+        const {title, description, body, tagList} = article;
+        this.setState({
+          title,
+          description,
+          article: body,
+          existingTagList: tagList
+        })
+      })
+
+    }
+  }
   handleChange = (event) => {
     let { name, value } = event.target;
     let errors = this.state.errors;
@@ -28,8 +53,38 @@ class NewPost extends React.Component {
     });
   };
   handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault();    
     let { title, description, article, tagList } = this.state;
+    if(this.props.params.slug) {
+      let slug =  this.props.params.slug;
+      let editArticleURL =`https://mighty-oasis-08080.herokuapp.com/api/articles/${slug}`;
+      fetch(editArticleURL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Token ${this.props.token}`,
+        },
+        body: JSON.stringify({
+          article: {
+            title,
+            description,
+            body: article,
+            tagList: this.state.existingTagList.concat(tagList),            
+          },
+        }),
+      })
+        .then((res) => res.json())
+        .then(({ article }) => {
+          this.setState({
+            title: '',
+            description: '',
+            article: '',
+            tagList: [],
+          });
+          console.log(article);
+          this.props.navigate(`/article/${article.slug}`);
+        });     
+    } else {
     fetch(createArticleURL, {
       method: 'POST',
       headers: {
@@ -55,8 +110,17 @@ class NewPost extends React.Component {
         });
         console.log(article);
         this.props.navigate(`/article/${article.slug}`);
-      });
+      });}
   };
+  handleDeleteTag = (deleteTag) => {    
+    let existingTagList = this.state.existingTagList;
+    console.log(existingTagList);
+    existingTagList = existingTagList.filter(tag => tag !== deleteTag);
+    console.log(existingTagList, 'After Filter');
+    this.setState({
+      existingTagList
+    });
+  }
   render() {
     const { title, description, article, tagList, errors } = this.state;
     return (
@@ -102,7 +166,15 @@ class NewPost extends React.Component {
             value={tagList.join(',')}
             onChange={(event) => this.handleChange(event)}
           />
-          <p className="error">{errors.tagList}</p>
+          <div className="flex justify-start" style={{ width: '100%'}}>
+          {this.props.params.slug ? this.state.existingTagList.map(tag => {
+            return <div className="existing-tag flex" key={tag} onClick={() => this.handleDeleteTag(tag)}>
+            <div>{tag}</div>             
+            <div className="tag-close flex center">x</div>
+            </div>
+          }) : <p className="error">{errors.tagList}</p>}
+          </div>
+          
           <input
             type="submit"
             value="Publish Article"
@@ -110,7 +182,7 @@ class NewPost extends React.Component {
               article === '' ||
               title === '' ||
               description === '' ||
-              tagList.length === 0             
+              (tagList.length === 0 && !this.state.existingTagList)             
             }
           />
         </form>

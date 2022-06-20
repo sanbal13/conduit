@@ -3,7 +3,7 @@ import withRouter from './WithRouter';
 
 function Hero(props) {
   let username = props.author.username;
-  function handleFollow() {
+  function handleFollow() {    
     let followURL = `https://mighty-oasis-08080.herokuapp.com/api/profiles/${username}/follow`;
     fetch(followURL, {
       method: 'POST',
@@ -46,16 +46,14 @@ function Hero(props) {
               Edit setting
             </Link>
             <div className="article-section">
-            <Link to={`/article/edit/${props.slug}`} className="edit-btn">
-              Edit Article
-            </Link>
+            <Link to={`/editor/${props.slug}`}>Edit Article </Link>             
             <button className="delete-btn" onClick={() => handleDelete()}>
               Delete Article
             </button>
             </div>
             </div>
           ) : (
-            <button onClick={() => handleFollow}>Follow</button>
+            <button onClick={() => handleFollow()} className="follow-btn">Follow</button>
           ))}
       </div>
     </div>

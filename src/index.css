@@ -69,7 +69,9 @@ body {
 a {
     text-decoration: none;
 }
-
+textarea {
+    line-height: 1.2rem;
+}
 /**************** Flex ****************/
 .flex {
     display: flex;
@@ -128,6 +130,11 @@ margin-bottom: 1rem;
 }
 
 /************** Main **************/
+.article-info {
+    box-shadow: 1px 1px 5px grey;
+    margin: 1rem 0;
+    padding: 1rem;
+}
 .heart1, .heart2 {
     display: inline-block;
     background-color: green;
@@ -135,6 +142,7 @@ margin-bottom: 1rem;
     width: 1rem;
     border-radius: 10px 10px 0px 0;
     transform: rotate(-45deg);
+    cursor: pointer;
 }
 .heart2 {
     transform: rotate(45deg);
@@ -221,7 +229,7 @@ input[type="submit"]:disabled {
    margin-top: 5rem;
 }
 .article-details .article-body {
-    margin-top: 5rem;
+    margin-top: 1rem;
     margin-bottom: 2rem;
     border-bottom: 1px solid rgb(206, 206, 206);
     padding-bottom: 3rem;
@@ -238,7 +246,7 @@ input[type="submit"]:disabled {
 .main, .aside {
     margin-top: 2rem;
 }
-.settings-btn, .edit-btn, .delete-btn {
+.settings-btn, .edit-btn, .delete-btn, .follow-btn {
     color: #fff;
     border: 1px solid #fff;
     padding: .5rem 1rem;
@@ -246,7 +254,10 @@ input[type="submit"]:disabled {
     margin-top: 1rem;
     cursor: pointer;
 }
-.settings-btn:hover, .edit-btn:hover {
+.follow-btn {
+    color: #000;
+}
+.settings-btn:hover, .edit-btn:hover, .follow-btn:hover {
     background-color: grey;
     color: #000;
 }
@@ -261,14 +272,34 @@ input[type="submit"]:disabled {
     color: #fff;
 }
 /* tag */
-.tag {
+.tag, .existing-tag{
     background-color: grey;
     color: #fff;
-    display: inline-block;
+    
     margin: .3rem;
     padding: .5rem;
     border-radius: .5rem;
 }
+.existing-tag {
+    
+}
+.tag-close {
+    margin-left: .5rem;
+    border: 2px solid #fff;
+    padding: 1px;
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+.tag-close:hover {
+    background-color: #fff;
+    color: #000;
+    cursor: pointer;
+}
+.tag-close:active {
+    background-color: rgb(248, 197, 197);
+}
+
 /* Comment */
 
 .comment-container {
@@ -288,8 +319,8 @@ input[type="submit"]:disabled {
     box-shadow: none;
 }
 .comment-img {
-    width: 2rem;
-    height: 2rem;
+    width: 3rem;
+    height: 3rem;
     border-radius: 50%;
     margin-right: .3rem;
 }
@@ -302,6 +333,8 @@ input[type="submit"]:disabled {
     border-right: 1px solid grey;
     border-left: 1px solid grey;
     margin-bottom: 2rem;
+    position: relative;
+    top: .5rem;
 }
 .padding-1rem {
     padding: 1rem;
@@ -312,9 +345,37 @@ input[type="submit"]:disabled {
     border: none;
     padding: 0;
     padding-right: 1rem;
+    cursor: pointer;   
+    padding: .3rem;
+    font-size: 1.5rem;
+    position: absolute;
+    right: 1rem;
+}
+.comment-delete-btn:hover {
+    box-shadow: none;
+    background-color: rgba(248, 197, 197, .5);
+    
 }
 .comment-delete-btn:focus {
     box-shadow: none;
-    color: red;
+    background-color: rgb(248, 197, 197);
+    outline: .5rem solid rgb(248, 197, 197);     
+}
+.comment-delete-btn:active {
+    box-shadow: none;
+    background-color: red;
+    outline: .5rem solid red;     
+}
+
+.comment-author {
+    color: rgb(128, 128, 128);
+    font-weight: 400;
+    margin-bottom: -.4rem;
+}
+.comment-date {
+    color: rgba(128, 128, 128, .8);
+    font-weight: 100;
+    font-size: .8rem;
+    font-style: italic;
 }
 /************** Footer **************/
